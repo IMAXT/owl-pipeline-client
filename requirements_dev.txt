@@ -1,0 +1,9 @@
+autopep8
+black==19.3b1.imaxt
+pylint
+flake8
+flake8-bugbear
+better-exceptions
+bumpversion
+sphinx
+sphinx-autodoc-typehints

@@ -33,7 +33,7 @@ os.environ['LOGLEVEL'] = os.environ.get('LOGLEVEL', 'DEBUG')
 os.environ['OMP_NUM_THREADS'] = '1'
 
 
-def terminate(*args):
+def terminate(*args):  # pragma: nocover
     log.info('Terminating...')
     try:
         client = Client.current()

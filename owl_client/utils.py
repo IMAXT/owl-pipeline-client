@@ -58,7 +58,7 @@ def read_config(
     return conf
 
 
-def find_free_port():  # pragma: nocover
+def find_free_port():
     with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
         for n in range(6006, 7006, 10):
             with suppress(OSError):

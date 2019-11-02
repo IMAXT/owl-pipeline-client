@@ -32,21 +32,15 @@ def submit_pipeline(args: Namespace) -> None:  # pragma: nocover
     with Path('~/.owlrc').expanduser().open(mode='r') as fd:
         auth = yaml.safe_load(fd.read())
         username, password, secret = auth['username'], auth['password'], auth['secret']
-        token = jwt.encode({'username': username, 'password': password}, secret)
-        token = token.decode('utf-8')
+        token_bytes = jwt.encode({'username': username, 'password': password}, secret)
+        token = token_bytes.decode('utf-8')
         headers = {'Authentication': f'{username} {token}'}
 
     try:
         r = requests.post(url, json=data, headers=headers)
         job_id = int(r.text)
-        err = ''
         print(success_msg % job_id)
     except ValueError:
         print('Failed to submit pipeline. Authentication failed.')
-        err = 'Authentication failed.'
-        job_id = None
     except Exception as err:
-        print('Failed to submit pipeline: ', err)
-        job_id = None
-
-    return (job_id, err)
+        print('Failed to submit pipeline: %s' % err)

@@ -5,7 +5,7 @@ import socket
 import traceback
 from contextlib import closing, suppress
 from functools import wraps
-from typing import IO, Callable, Dict, Union
+from typing import IO, Any, Callable, Dict, Union
 
 import pkg_resources
 import yaml
@@ -34,7 +34,7 @@ yaml.add_constructor('!path', _path_constructor, yaml.SafeLoader)
 
 def read_config(
     config: Union[str, IO[str]], validate: Callable = None
-) -> Dict[str, str]:
+) -> Dict[str, Any]:
     """Read configuration file.
 
     Parameters
@@ -73,7 +73,9 @@ def get_pipeline(name: str) -> Callable:
             f = e.load()
             s = f.schema
             s.extra = vo.REMOVE_EXTRA
-            return register_pipeline(validate=s)(f)
+            res = register_pipeline(validate=s)(f)
+            break
+    return res
 
 
 class register_pipeline:
@@ -105,7 +107,7 @@ class register_pipeline:
             else:
                 client = None
             try:
-                return func.main(**_config)
+                return func.main(**_config)  # type: ignore
             except Exception:
                 traceback_str = traceback.format_exc()
                 raise Exception(

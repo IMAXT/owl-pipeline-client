@@ -7,3 +7,4 @@ better-exceptions
 bumpversion
 sphinx
 sphinx-autodoc-typehints
+mypy

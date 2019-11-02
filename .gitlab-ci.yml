@@ -20,6 +20,15 @@ flake8:
   script:
     - python setup.py flake8
 
+mypy:
+  stage: Static Analysis
+  tags:
+    - python
+  except:
+    - tags
+  script:
+    - mypy owl_client --ignore-missing-imports
+
 docs:
   stage: Documentation
   tags:

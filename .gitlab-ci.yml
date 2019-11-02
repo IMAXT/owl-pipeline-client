@@ -1,0 +1,32 @@
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  image: imaxt/owl-pipeline:latest
+  tags:
+    - python
+  except:
+    - tags
+  script:
+    - pip install -r requirements_dev.txt
+    - python setup.py develop
+    - python setup.py flake8
+    - python setup.py build_sphinx -W
+    - python setup.py test
+
+deploy:
+  stage: deploy
+  image: imaxt/owl-pipeline:latest
+  tags:
+    - python
+  only:
+    - tags
+  script:
+    - python setup.py sdist
+    - curl -X MKCOL $REPO/owl_client
+    - curl -XPUT $REPO/owl_client/owl_client-0.1.0.tar.gz --data-binary @dist/owl_client-0.1.0.tar.gz
+  environment:
+    name: Repository
+    url: http://imaxt.ast.cam.ac.uk/pip/owl_client/

@@ -1,11 +1,13 @@
 import logging
 import logging.config
 import os
+import signal
+import sys
 import time
 from argparse import Namespace
 from contextlib import closing
 
-from distributed import LocalCluster
+from distributed import Client, LocalCluster
 
 from owl_client.utils import find_free_port, get_pipeline, read_config
 
@@ -31,6 +33,17 @@ os.environ['LOGLEVEL'] = os.environ.get('LOGLEVEL', 'DEBUG')
 os.environ['OMP_NUM_THREADS'] = '1'
 
 
+def terminate(*args):  # pragma: nocover
+    log.info('Terminating...')
+    try:
+        client = Client.current()
+        client.close()
+        client.cluster.close()
+    except:  # noqa: E722
+        pass
+    sys.exit(1)
+
+
 def run_standalone(args: Namespace) -> None:  # pragma: nocover
     """Run worker pipeline.
 
@@ -42,6 +55,9 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
 
     global logconf
 
+    signal.signal(signal.SIGTERM, terminate)
+    signal.signal(signal.SIGINT, terminate)
+
     conf = read_config(args.conf)
 
     log_config = read_config(logconf)
@@ -52,6 +68,7 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
     port = find_free_port()
 
     resources = conf['resources']
+
     with closing(
         LocalCluster(
             n_workers=resources.get('workers', 2),

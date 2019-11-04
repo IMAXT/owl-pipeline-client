@@ -1,12 +1,12 @@
 ChangeLog
 =========
 
-0.2.4 (2019-11-04)
+0.3.0 (2019-11-04)
 ------------------
 
-* Bug fixes.
+* New style command line.
 
-0.2.0 (2019-11-02)
+0.2.4 (2019-11-02)
 ------------------
 
 * Support for running pipelines locally.

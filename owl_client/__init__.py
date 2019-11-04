@@ -1,3 +1,3 @@
 _author__ = 'Eduardo Gonzalez Solares'
 __email__ = 'eglez@ast.cam.ac.uk'
-__version__ = '0.2.2'
+__version__ = '0.2.3'

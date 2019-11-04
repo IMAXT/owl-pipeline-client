@@ -55,8 +55,8 @@ deploy:
     - tags
   script:
     - python setup.py sdist
-    - curl -X MKCOL $REPO/owl_client
-    - curl -XPUT $REPO/owl_client/owl_client-0.2.0.tar.gz --data-binary @dist/owl_client-0.2.0.tar.gz
+    - curl -X MKCOL $REPO/owl-pipeline-client
+    - curl -XPUT $REPO/owl-pipeline-client/owl-pipeline-client-0.2.0.tar.gz --data-binary @dist/owl-pipeline-client-0.2.0.tar.gz
   environment:
     name: Repository
-    url: http://imaxt.ast.cam.ac.uk/pip/owl_client/
+    url: http://imaxt.ast.cam.ac.uk/pip/owl-pipeline-client

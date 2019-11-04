@@ -27,25 +27,21 @@ def parse_args(input: List[str]) -> Namespace:
     parser = ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    # API
-    api = subparsers.add_parser('api').add_subparsers()
-    api_login = api.add_parser('login')
-    api_login.add_argument('--api', required=False, type=str, default=OWL_API_URL)
-    api_login.set_defaults(func=login_api)
+    # Login
+    login = subparsers.add_parser('login')
+    login.add_argument('--api', required=False, type=str, default=OWL_API_URL)
+    login.set_defaults(func=login_api)
 
-    # Pipeline
-    pipeline = subparsers.add_parser('pipeline').add_subparsers()
+    # Submit
+    submit = subparsers.add_parser('submit')
+    submit.add_argument('conf', type=FileType('r'))
+    submit.add_argument('--api', required=False, type=str, default=OWL_API_URL)
+    submit.set_defaults(func=submit_pipeline)
 
-    # ... run
-    pipeline_submit = pipeline.add_parser('run')
-    pipeline_submit.add_argument('--conf', required=True, type=FileType('r'))
-    pipeline_submit.set_defaults(func=run_standalone)
-
-    # ... submit
-    pipeline_submit = pipeline.add_parser('submit')
-    pipeline_submit.add_argument('--conf', required=True, type=FileType('r'))
-    pipeline_submit.add_argument('--api', required=False, type=str, default=OWL_API_URL)
-    pipeline_submit.set_defaults(func=submit_pipeline)
+    # Execute
+    execute = subparsers.add_parser('execute')
+    execute.add_argument('conf', type=FileType('r'))
+    execute.set_defaults(func=run_standalone)
 
     args = parser.parse_args(input)
     if not hasattr(args, 'func'):

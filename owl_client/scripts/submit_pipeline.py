@@ -26,7 +26,7 @@ def submit_pipeline(args: Namespace) -> None:  # pragma: nocover
     log.debug('Submitting pipeline to queue...')
     conf = read_config(args.conf)
 
-    url = f'http://{args.api}/api/v1/pipeline/add'
+    url = f'https://{args.api}/api/v1/pipeline/add'
     data = {'config': conf}
 
     with Path('~/.owlrc').expanduser().open(mode='r') as fd:
@@ -40,7 +40,7 @@ def submit_pipeline(args: Namespace) -> None:  # pragma: nocover
         r = requests.post(url, json=data, headers=headers)
         job_id = int(r.text)
         print(success_msg % job_id)
-    except ValueError:
-        print('Failed to submit pipeline. Authentication failed.')
+    except ValueError as err:
+        print('Failed to submit pipeline. Authentication failed. %s ' % err)
     except Exception as err:
         print('Failed to submit pipeline: %s' % err)

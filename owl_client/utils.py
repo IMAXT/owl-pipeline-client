@@ -75,7 +75,10 @@ def get_pipeline(name: str) -> Callable:
             s.extra = vo.REMOVE_EXTRA
             res = register_pipeline(validate=s)(f)
             break
-    return res
+    try:
+        return res
+    except NameError:
+        raise Exception('Pipeline %s not found', name)
 
 
 class register_pipeline:

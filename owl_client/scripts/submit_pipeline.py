@@ -15,7 +15,7 @@ Job ID %d submitted.
 """
 
 
-def submit_pipeline(args: Namespace) -> None:  # pragma: nocover
+def submit_pipeline(args: Namespace) -> None:
     """Add pipeline to queue.
 
     Parameters

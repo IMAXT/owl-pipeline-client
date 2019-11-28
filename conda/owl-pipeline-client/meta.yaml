@@ -1,0 +1,65 @@
+{% set name = "owl-pipeline-client" %}
+{% set version = "0.4.1" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  git_url: "https://github.com/IMAXT/owl-pipeline-client.git"
+  git_rev: v0.4.1
+
+build:
+  noarch: python
+  number: 0
+  entry_points:
+    - owl=owl_client.cli:main
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+requirements:
+  build: 
+    - python>=3.6
+  host:
+    - python>=3.6
+    - pip
+    - dask
+    - distributed
+    - pyjwt
+    - pyyaml
+    - requests
+    - voluptuous
+    - flake8
+    - pytest-runner
+  run:
+    - dask
+    - distributed
+    - pyjwt
+    - python>=3.6
+    - pyyaml
+    - requests
+    - voluptuous
+
+test:
+  imports:
+    - owl_client
+    - owl_client.scripts
+  commands:
+    - owl --help
+  requires:
+    - coverage
+    - pytest
+    - pytest-cov
+    - pytest-mock
+
+about:
+  home: "https://github.com/IMAXT/owl-pipeline-client"
+  license: "GNU General Public v3 (GPLv3)"
+  license_family: GPL3
+  license_file:
+  summary: "Pipeline Framework"
+  doc_url:
+  dev_url:
+
+extra:
+  recipe-maintainers:
+    - your-github-id-here

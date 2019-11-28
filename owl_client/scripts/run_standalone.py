@@ -68,19 +68,25 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
     port = find_free_port()
 
     resources = conf['resources']
+    n_workers = resources.get('workers', 2)
+    threads = resources.get('threads', 2)
+    memory = resources.get('memory', 7)
 
     with closing(
         LocalCluster(
-            n_workers=resources.get('workers', 2),
-            threads_per_worker=resources.get('threads', 2),
+            n_workers=n_workers,
+            threads_per_worker=threads,
             scheduler_port=port,
             diagnostics_port=port + 1,
-            memory_limit=resources.get('memory', '7GB'),
+            memory_limit=f'{memory}GB',
         )
     ) as cluster:
         log.info('Running diagnostics interface in http://localhost:%s', port + 1)
         log.info('Starting pipeline %r', conf['name'])
         log.debug('Configuration %s', conf)
         watch = time.monotonic()
+        if args.debug:
+            import dask.config
+            dask.config.set(scheduler='sync')
         func(conf, log_config, cluster=cluster)
         log.info('Elapsed time %fs', time.monotonic() - watch)

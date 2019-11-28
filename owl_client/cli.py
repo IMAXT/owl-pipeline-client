@@ -41,6 +41,7 @@ def parse_args(input: List[str]) -> Namespace:
     # Execute
     execute = subparsers.add_parser('execute')
     execute.add_argument('conf', type=FileType('r'))
+    execute.add_argument('--debug', action='store_true')
     execute.set_defaults(func=run_standalone)
 
     args = parser.parse_args(input)

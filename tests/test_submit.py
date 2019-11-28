@@ -1,11 +1,18 @@
 import json
 from argparse import Namespace
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 import requests
 
 from owl_client.scripts import submit_pipeline
 
+owlrc = Path('~/.owlrc').expanduser()
+if not owlrc.exists():
+    with open(owlrc, 'w') as fh:
+        fh.write('password: password\n')
+        fh.write('username: username\n')
+        fh.write('secret: secret\n')
 
 @patch.object(requests, 'post')
 def test_submit_ok(mockpost, capsys):

@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-0.3.1 (2019-11-28)
+0.4.1 (2019-11-28)
 ------------------
 
 * Add debug flag to execute in order to run the pipeline 

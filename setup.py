@@ -35,8 +35,8 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/IMAXT/owl-pipeline-client',
-    download_url='https://github.com/IMAXT/owl-pipeline-client/archive/v0.3.0.tar.gz',
-    version='0.3.0',
+    download_url='https://github.com/IMAXT/owl-pipeline-client/archive/v0.4.0.tar.gz',
+    version='0.4.0',
     zip_safe=False,
     python_requires='>=3',
 )

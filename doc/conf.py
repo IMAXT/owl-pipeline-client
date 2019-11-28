@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'OWL Pipeline Client'
+project = 'OWL Client'
 copyright = '2019, Eduardo Gonzalez Solares'
 author = 'Eduardo Gonzalez Solares'
 

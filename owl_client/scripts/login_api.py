@@ -9,6 +9,8 @@ import yaml
 
 log = logging.getLogger(__name__)
 
+ROUTE = '/api/v1/login'
+
 
 def login_api(args: Namespace) -> None:  # pragma: nocover
     """Login to the API.
@@ -18,10 +20,11 @@ def login_api(args: Namespace) -> None:  # pragma: nocover
     arg
         Argparse namespace containing command line flags.
     """
+    print(f'Using IMAXT API: https://{args.api}{ROUTE}')
     username = input('Username: ')
-    password = getpass.getpass()
+    password = getpass.getpass(f'{username}\'s Password: ')
 
-    url = f'https://{args.api}/api/v1/login'
+    url = f'https://{args.api}{ROUTE}'
     data = {'username': username, 'password': password}
     try:
         r = requests.post(url, json=data)

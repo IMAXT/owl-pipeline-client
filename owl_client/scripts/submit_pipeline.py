@@ -28,8 +28,12 @@ def submit_pipeline(args: Namespace) -> None:
 
     url = f'https://{args.api}/api/v1/pipeline/add'
     data = {'config': conf}
+    owlrc = Path('~/.owlrc').expanduser()
+    if not owlrc.exists():
+        print('Cannot find authentication token. Please login first  "owl login"')
+        return
 
-    with Path('~/.owlrc').expanduser().open(mode='r') as fd:
+    with owlrc.open(mode='r') as fd:
         auth = yaml.safe_load(fd.read())
         username, password, secret = auth['username'], auth['password'], auth['secret']
         token_bytes = jwt.encode({'username': username, 'password': password}, secret)

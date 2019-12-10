@@ -7,17 +7,16 @@ Owl Client
    :width: 110px
 
 .. image:: https://anaconda.org/eddie0uk/owl-pipeline-client/badges/version.svg
-   :target: https://anaconda.org/eddie0uk/owl-pipeline-client
    :width: 140px
+   :target: https://anaconda.org/eddie0uk/owl-pipeline-client
 
 .. image:: https://img.shields.io/pypi/v/owl-pipeline-client.svg
-   :target: https://pypi.org/project/owl-pipeline-client
    :width: 80px
+   :target: https://pypi.org/project/owl-pipeline-client
 
 .. image:: https://anaconda.org/eddie0uk/owl-pipeline-client/badges/latest_release_date.svg
-   :target: https://anaconda.org/eddie0uk/owl-pipeline-client
    :width: 160px
-
+   :target: https://anaconda.org/eddie0uk/owl-pipeline-client
 
 
 .. include:: ../README.rst

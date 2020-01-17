@@ -21,6 +21,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.5',
     ],
     description='Pipeline Framework',
     entry_points={'console_scripts': ['owl=owl_client.cli:main']},

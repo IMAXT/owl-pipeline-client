@@ -26,7 +26,7 @@ def submit_pipeline(args: Namespace) -> None:
     log.debug('Submitting pipeline to queue...')
     conf = read_config(args.conf)
 
-    url = f'https://{args.api}/api/v1/pipeline/add'
+    url = 'https://{}/api/v1/pipeline/add'.format(args.api)
     data = {'config': conf}
     owlrc = Path('~/.owlrc').expanduser()
     if not owlrc.exists():
@@ -38,7 +38,7 @@ def submit_pipeline(args: Namespace) -> None:
         username, password, secret = auth['username'], auth['password'], auth['secret']
         token_bytes = jwt.encode({'username': username, 'password': password}, secret)
         token = token_bytes.decode('utf-8')
-        headers = {'Authentication': f'{username} {token}'}
+        headers = {'Authentication': '{} {}'.format(username, token)}
 
     try:
         r = requests.post(url, json=data, headers=headers)

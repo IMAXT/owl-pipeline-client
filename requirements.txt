@@ -1,6 +1,6 @@
 requests
 pyjwt
 pyyaml
-dask
-distributed
+dask==2.6
+distributed==2.6
 voluptuous

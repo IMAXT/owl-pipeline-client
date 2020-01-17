@@ -20,22 +20,22 @@ def login_api(args: Namespace) -> None:  # pragma: nocover
     arg
         Argparse namespace containing command line flags.
     """
-    print(f'Using IMAXT API: https://{args.api}{ROUTE}')
+    print('Using IMAXT API: https://{}{}'.format(args.api, ROUTE))
     username = input('Username: ')
-    password = getpass.getpass(f'{username}\'s Password: ')
+    password = getpass.getpass('{}\'s Password: '.format(username))
 
-    url = f'https://{args.api}{ROUTE}'
+    url = 'https://{}{}'.format(args.api, ROUTE)
     data = {'username': username, 'password': password}
     try:
         r = requests.post(url, json=data)
         salt, secret = r.text.split('$')
     except requests.RequestException:
-        print(f'ERROR: Failed to connect to the API at {args.api}')
+        print('ERROR: Failed to connect to the API at {}'.format(args.api))
         return
     except ValueError:
         if 'ERROR' in r.text:
             _, msg = r.text.split(':')
-        print(f'ERROR: Login failed: {msg}')
+        print('ERROR: Login failed: {}'.format(msg))
         return
     except Exception:
         print('Login failed')
@@ -51,4 +51,4 @@ def login_api(args: Namespace) -> None:  # pragma: nocover
         fd.seek(0)
         fd.write(config)
 
-    os.chmod(f'{owlrc}', 0o600)
+    os.chmod('{}'.format(owlrc), 0o600)

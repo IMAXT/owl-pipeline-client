@@ -78,7 +78,7 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
             threads_per_worker=threads,
             scheduler_port=port,
             diagnostics_port=port + 1,
-            memory_limit=f'{memory}GB',
+            memory_limit='{}GB'.format(memory),
         )
     ) as cluster:
         log.info('Running diagnostics interface in http://localhost:%s', port + 1)
@@ -87,6 +87,7 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
         watch = time.monotonic()
         if args.debug:
             import dask.config
+
             dask.config.set(scheduler='sync')
         func(conf, log_config, cluster=cluster)
         log.info('Elapsed time %fs', time.monotonic() - watch)

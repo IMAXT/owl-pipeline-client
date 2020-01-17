@@ -9,7 +9,7 @@ import yaml
 log = logging.getLogger(__name__)
 
 
-def status_pipeline(args: Namespace) -> None:  # pragma: nocover
+def status_pipeline(args: Namespace) -> None:
     """Cancel pipeline
 
     Parameters
@@ -29,8 +29,8 @@ def status_pipeline(args: Namespace) -> None:  # pragma: nocover
     with owlrc.open(mode='r') as fd:
         auth = yaml.safe_load(fd.read())
         username, password, secret = auth['username'], auth['password'], auth['secret']
-        token = jwt.encode({'username': username, 'password': password}, secret)
-        token = token.decode('utf-8')
+        token_bytes = jwt.encode({'username': username, 'password': password}, secret)
+        token = token_bytes.decode('utf-8')
         headers = {'Authentication': '{} {}'.format(username, token)}
 
     try:

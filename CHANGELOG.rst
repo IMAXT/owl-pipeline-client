@@ -1,11 +1,13 @@
 ChangeLog
 =========
 
-0.4.2 (2020-01-17)
+0.5.0 (2020-01-17)
 ------------------
 
 * Support Python versions >=3.5
 * Add verbosity to login
+* Additional command line scripts to cancel jobs and query 
+  status and obtain logs.
 
 0.4.1 (2019-11-28)
 ------------------

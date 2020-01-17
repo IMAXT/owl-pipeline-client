@@ -18,26 +18,20 @@ build:
 
 requirements:
   build: 
-    - python>=3.6
+    - python=3.7
   host:
-    - python>=3.6
+    - python>=3.5
     - pip
-    - dask
-    - distributed
     - pyjwt
     - pyyaml
     - requests
-    - voluptuous
     - flake8
     - pytest-runner
   run:
-    - dask
-    - distributed
     - pyjwt
-    - python>=3.6
+    - python>=3.5
     - pyyaml
     - requests
-    - voluptuous
 
 test:
   imports:

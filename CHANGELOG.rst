@@ -1,8 +1,8 @@
 ChangeLog
 =========
 
-WIP
----
+0.4.2 (2020-01-17)
+------------------
 
 * Support Python versions >=3.5
 * Add verbosity to login

@@ -5,7 +5,12 @@ import sys
 from argparse import ArgumentParser, FileType, Namespace
 from typing import List
 
-from owl_client.scripts import login_api, run_standalone, submit_pipeline
+from owl_client.scripts import (
+    cancel_pipeline,
+    login_api,
+    run_standalone,
+    submit_pipeline,
+)
 
 log = logging.getLogger(__name__)
 
@@ -43,6 +48,12 @@ def parse_args(input: List[str]) -> Namespace:
     execute.add_argument('conf', type=FileType('r'))
     execute.add_argument('--debug', action='store_true')
     execute.set_defaults(func=run_standalone)
+
+    # Cancel
+    cancel = subparsers.add_parser('cancel')
+    cancel.add_argument('jobid')
+    cancel.add_argument('--api', required=False, type=str, default=OWL_API_URL)
+    cancel.set_defaults(func=cancel_pipeline)
 
     args = parser.parse_args(input)
     if not hasattr(args, 'func'):

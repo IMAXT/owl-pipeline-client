@@ -91,8 +91,9 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
             n_workers=n_workers,
             threads_per_worker=threads,
             scheduler_port=port,
-            diagnostics_port=port + 1,
+            dashboard_address='localhost:{}'.format(port+1),
             memory_limit='{}GB'.format(memory),
+            local_directory='/tmp',
         )
     ) as cluster:
         log.info('Running diagnostics interface in http://localhost:%s', port + 1)

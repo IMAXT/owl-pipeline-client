@@ -6,6 +6,7 @@ import sys
 import time
 from argparse import Namespace
 from contextlib import closing
+import traceback
 
 from distributed import Client, LocalCluster
 
@@ -102,6 +103,11 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
             log.info('Running in debug mode')
             import dask.config
 
-            dask.config.set(scheduler='sync')
-        func(conf, log_config, cluster=cluster)
+            dask.config.set(scheduler='single-threaded')
+        try:
+            func(conf, log_config, cluster=cluster)
+        except Exception:
+            tb = traceback.format_exc()
+            log.critical(f'{tb!r}')
+            raise
         log.info('Elapsed time %fs', time.monotonic() - watch)

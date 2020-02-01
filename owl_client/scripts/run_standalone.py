@@ -18,13 +18,26 @@ handlers:
     class: logging.StreamHandler
     formatter: standard
     stream: 'ext://sys.stderr'
+  file:
+    class: logging.FileHandler
+    filename: owl.log
+    mode: w
+    formatter: standard
 formatters:
   standard:
-    format: '%(asctime)s PIPELINE %(levelname)s %(name)s %(funcName)s - %(message)s'
+    format: '%(asctime)s PIPELINE %(levelname)s %(name)s %(funcName)s | %(message)s'
 loggers:
   owl.daemon.pipeline:
-    handlers: [console]
+    handlers: [console, file]
     level: ${LOGLEVEL}
+  prefect.TaskRunner:
+    handlers: [console, file]
+    level: ${LOGLEVEL}
+    propagate: False
+  prefect.FlowRunner:
+    handlers: [console, file]
+    level: ${LOGLEVEL}
+    propagate: False
 """
 
 log = logging.getLogger('owl.daemon.pipeline')
@@ -86,6 +99,7 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
         log.debug('Configuration %s', conf)
         watch = time.monotonic()
         if args.debug:
+            log.info('Running in debug mode')
             import dask.config
 
             dask.config.set(scheduler='sync')

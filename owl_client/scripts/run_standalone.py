@@ -3,6 +3,7 @@ import logging.config
 import os
 import signal
 import sys
+import tempfile
 import time
 from argparse import Namespace
 from contextlib import closing
@@ -86,29 +87,31 @@ def run_standalone(args: Namespace) -> None:  # pragma: nocover
     threads = resources.get('threads', 2)
     memory = resources.get('memory', 7)
 
-    with closing(
-        LocalCluster(
-            n_workers=n_workers,
-            threads_per_worker=threads,
-            scheduler_port=port,
-            dashboard_address='localhost:{}'.format(port+1),
-            memory_limit='{}GB'.format(memory),
-            local_directory='/tmp',
-        )
-    ) as cluster:
-        log.info('Running diagnostics interface in http://localhost:%s', port + 1)
-        log.info('Starting pipeline %r', conf['name'])
-        log.debug('Configuration %s', conf)
-        watch = time.monotonic()
-        if args.debug:
-            log.info('Running in debug mode')
-            import dask.config
+    tmpdir = os.environ.get('TMP_DIR', '/tmp')
+    with tempfile.TemporaryDirectory(dir=tmpdir) as local_directory:
+        with closing(
+            LocalCluster(
+                n_workers=n_workers,
+                threads_per_worker=threads,
+                scheduler_port=port,
+                dashboard_address='localhost:{}'.format(port + 1),
+                memory_limit='{}GB'.format(memory),
+                local_directory=local_directory
+            )
+        ) as cluster:
+            log.info('Running diagnostics interface in http://localhost:%s', port + 1)
+            log.info('Starting pipeline %r', conf['name'])
+            log.debug('Configuration %s', conf)
+            watch = time.monotonic()
+            if args.debug:
+                log.info('Running in debug mode')
+                import dask.config
 
-            dask.config.set(scheduler='single-threaded')
-        try:
-            func(conf, log_config, cluster=cluster)
-        except Exception:
-            tb = traceback.format_exc()
-            log.critical(f'{tb!r}')
-            raise
-        log.info('Elapsed time %fs', time.monotonic() - watch)
+                dask.config.set(scheduler='single-threaded')
+            try:
+                func(conf, log_config, cluster=cluster)
+            except Exception:
+                tb = traceback.format_exc()
+                log.critical(f'{tb!r}')
+                raise
+    log.info('Elapsed time %fs', time.monotonic() - watch)

@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+0.5.2 (2020-04-20)
+------------------
+
+* Temporary directory can be set using TMP_DIR environmental
+  variable.
+* Configuration available as main function attribute.
+
 0.5.1 (2020-02-01)
 ------------------
 

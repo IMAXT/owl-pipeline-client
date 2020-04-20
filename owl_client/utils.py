@@ -110,7 +110,7 @@ class register_pipeline:
             else:
                 client = None
             try:
-                func.main.config = config
+                func.main.config = config  # type: ignore
                 return func.main(**_config)  # type: ignore
             except Exception:
                 traceback_str = traceback.format_exc()

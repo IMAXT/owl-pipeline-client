@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-0.5.2 (2020-04-20)
+0.5.3 (2020-04-20)
 ------------------
 
 * Temporary directory can be set using TMP_DIR environmental

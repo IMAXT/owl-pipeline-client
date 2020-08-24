@@ -5,7 +5,7 @@ import socket
 import traceback
 from contextlib import closing, suppress
 from functools import wraps
-from typing import IO, Any, Callable, Dict, Union
+from typing import IO, Any, Callable, Dict, Union, NamedTuple
 
 import pkg_resources
 import yaml
@@ -17,6 +17,18 @@ log = logging.getLogger('owl.cli')
 
 
 _path_matcher = re.compile(r'(\S+)?(\$\{([^}^{]+)\})')
+
+
+class Pipeline(NamedTuple):
+    main: Callable
+    schema: vo.Schema
+
+
+_injected_pipelines: Dict[str, Pipeline] = {}
+
+
+def inject_pipeline(name: str, fn: Callable, schema: vo.Schema = None):
+    _injected_pipelines[name] = Pipeline(main=fn, schema=schema)
 
 
 def _path_constructor(loader, node):
@@ -68,17 +80,19 @@ def find_free_port():
 
 
 def get_pipeline(name: str) -> Callable:
+    f = find_pipeline(name)
+    s = f.schema
+    s.extra = vo.REMOVE_EXTRA
+    return register_pipeline(validate=s)(f)
+
+
+def find_pipeline(name: str) -> Pipeline:
+    if name in _injected_pipelines:
+        return _injected_pipelines[name]
     for e in pkg_resources.iter_entry_points('owl.pipelines'):
         if e.name == name:
-            f = e.load()
-            s = f.schema
-            s.extra = vo.REMOVE_EXTRA
-            res = register_pipeline(validate=s)(f)
-            break
-    try:
-        return res
-    except NameError:
-        raise Exception('Pipeline %s not found', name)
+            return e.load()
+    raise Exception('Pipeline %s not found', name)
 
 
 class register_pipeline:
@@ -90,8 +104,8 @@ class register_pipeline:
         if self.schema is not None:
             self.schema.extra = vo.REMOVE_EXTRA
 
-    def __call__(self, func: Callable) -> Callable:
-        @wraps(func)
+    def __call__(self, func: Pipeline) -> Callable:
+        @wraps(func.main)
         def wrapper(config: Dict, logconfig: Dict, cluster=None):
 
             if self.schema is not None:

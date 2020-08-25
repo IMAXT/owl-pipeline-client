@@ -72,7 +72,7 @@ clusterSchema = vo.Schema({
     vo.Required("memory", default="{memory}GB"): str,
     vo.Required("local_directory", default="{local_directory}"): str,
     vo.Required("dashboard_address", default="localhost:{port + 1}"): str,
-    vo.Required("walltime", default="1500000"): vo.Coerce(str),
+    vo.Required("walltime", default="24:00:00"): vo.Coerce(str),
     vo.Required("n_workers", default="{workers}"): vo.Coerce(str)
 }, extra=vo.ALLOW_EXTRA)
 

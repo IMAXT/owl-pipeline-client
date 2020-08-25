@@ -68,12 +68,12 @@ clusterMap: Dict[str, Callable[..., SpecCluster]] = {c.config_name: c for c in c
 
 clusterSchema = vo.Schema({
     vo.Required("type"): str,
-    vo.Required("cores", default="{threads}"): str,
+    vo.Required("cores", default="{threads}"): vo.Coerce(str),
     vo.Required("memory", default="{memory}GB"): str,
     vo.Required("local_directory", default="{local_directory}"): str,
     vo.Required("dashboard_address", default="localhost:{port + 1}"): str,
-    vo.Required("walltime", default="1500000"): str,
-    vo.Required("n_workers", default="{workers}"): str
+    vo.Required("walltime", default="1500000"): vo.Coerce(str),
+    vo.Required("n_workers", default="{workers}"): vo.Coerce(str)
 }, extra=vo.ALLOW_EXTRA)
 
 formatter = ArithmeticFormatter()
